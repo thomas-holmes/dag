@@ -4,3 +4,7 @@ defrecord Dag.Objects.Blob, type: :blob, data: <<>>, hash: <<>> do
        Dag.Objects.create_blob to construct a blob
   """
 end
+
+defimpl Dag.Hashable, for: Dag.Objects.Blob do
+  def get_data(object), do: object.data
+end
