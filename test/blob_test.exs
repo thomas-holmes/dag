@@ -2,7 +2,7 @@ Code.require_file "test_helper.exs", __DIR__
 
 defmodule BlobTest do
   use ExUnit.Case
-  alias Dag.Blob
+  alias Dag.Objects.Blob
 
   test "Blob has :type of :blob" do
     blob = Blob.new(data: "sample data")
