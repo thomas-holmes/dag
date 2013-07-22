@@ -4,6 +4,7 @@ defmodule BlobTest do
   use ExUnit.Case
   alias Dag.Objects.Blob
   alias Dag.Hashable
+  alias Dag.Serializable
 
   test "Blob has :type of :blob" do
     blob = Blob.new(data: "sample data")
@@ -28,5 +29,18 @@ defmodule BlobTest do
   test "Blob implements Dag.Hashable.get_data by returning data" do
     blob = Blob.new(data: "sample data")
     assert Hashable.get_data(blob) == "sample data"
+  end
+
+  test "Blob implements Dag.Serializable protocol" do
+    blob = Blob.new(data: "sample data")
+    assert Serializable.get_serialized_data(blob) != nil
+  end
+
+  test "Blob can be deserialized" do
+    blob = Blob.new(data: "sample data")
+    blob = blob.hash(Dag.Hash.hash(blob))
+    serialized_blob = Dag.Serialize.serialize(blob)
+    deserialized_blob = Dag.Serialize.deserialize(String.split(serialized_blob, "\n"))
+    assert blob == deserialized_blob
   end
 end
