@@ -23,10 +23,12 @@ defmodule Dag.Serialize do
   end
 
   defp _deserialize([ type | tail ]) do
-    _deserialize(:blob, tail)
+    _deserialize(binary_to_atom(type), tail)
   end
 
   defp _deserialize(type, [ hash | tail]) when is_atom(type) do
-    Dag.Deserializable.get_deserialized_object(type, hash, tail)
+    _deserialize(type, hash, tail)
   end
+
+  defp _deserialize(:blob, hash, content), do: Dag.Objects.Blob.deserialize(hash, content)
 end
