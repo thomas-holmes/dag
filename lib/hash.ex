@@ -14,5 +14,13 @@ defmodule Dag.Hash do
   """
   def hash(object) do
     :crypto.hash(:sha384, Hashable.get_data(object))
+    |> hash_to_hex
+  end
+
+  def hash_to_hex(hash) do
+    hash
+    |> binary_to_list
+    |> Enum.map(fn(char) -> :io_lib.format("~2.16.0b", [char]) end)
+    |> Enum.join
   end
 end

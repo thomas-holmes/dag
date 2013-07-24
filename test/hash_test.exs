@@ -7,7 +7,7 @@ defmodule HashTest do
 
   test "Hash.hash hashes digest of given object using SHA384" do
     hashed_text = Hash.hash("sample data")
-    expected_text = :crypto.hash(:sha384, "sample data")
+    expected_text = :crypto.hash(:sha384, "sample data") |> Hash.hash_to_hex
     assert hashed_text == expected_text
   end
 end
