@@ -43,4 +43,12 @@ defmodule BlobTest do
     deserialized_blob = Dag.Serialize.deserialize(String.split(serialized_blob, "\n"))
     assert blob == deserialized_blob
   end
+
+  test "Blob can be deserialized multi-line data" do
+    blob = Blob.new(data: "sample data\nand more stuff\nand other stuff")
+    blob = blob.hash(Dag.Hash.hash(blob))
+    serialized_blob = Dag.Serialize.serialize(blob)
+    deserialized_blob = Dag.Serialize.deserialize(String.split(serialized_blob, "\n"))
+    assert blob == deserialized_blob
+  end
 end
