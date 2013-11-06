@@ -19,7 +19,7 @@ defmodule Dag.Hash do
 
   def hash_to_hex(hash) do
     hash
-    |> binary_to_list
+    |> :binary.bin_to_list
     |> Enum.map(fn(char) -> :io_lib.format("~2.16.0b", [char]) end)
     |> Enum.join
   end
