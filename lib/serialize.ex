@@ -10,6 +10,9 @@ defprotocol Dag.Deserializable do
   def get_deserialized_object(type, hash, content)
 end
 
+defimpl Dag.Deserializable, for: Atom do
+end
+
 defmodule Dag.Serialize do
   alias Dag.Serializable
   alias Dag.Deserializable
@@ -23,10 +26,13 @@ defmodule Dag.Serialize do
   end
 
   defp _deserialize([ type | tail ]) do
-    _deserialize(:blob, tail)
+    _deserialize(binary_to_atom(type), tail)
   end
 
   defp _deserialize(type, [ hash | tail]) when is_atom(type) do
-    Dag.Deserializable.get_deserialized_object(type, hash, tail)
+    _deserialize(type, hash, tail)
   end
+
+  defp _deserialize(:blob, hash, content), do: Dag.Objects.Blob.deserialize(hash, content)
+  defp _deserialize(:tree, hash, content), do: Dag.Objects.Tree.deserialize(hash, content)
 end
